@@ -1,38 +1,37 @@
-type ConfirmedAttendee @entity(immutable: true) {
-  id: Bytes!
-  eventId: Bytes! # bytes32
-  attendeeAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Event @entity {
+  id: ID!
+  eventID: Bytes!
+  name: String
+  description: String
+  link: String
+  imageURL: String
+  eventOwner: Bytes!
+  eventTimestamp: BigInt!
+  maxCapacity: BigInt!
+  deposit: BigInt!
+  paidOut: Boolean!
+  totalRSVPs: BigInt!
+  totalConfirmedAttendees: BigInt!
+  rsvps: [RSVP!] @derivedFrom(field: "event")
+  confirmedAttendees: [Confirmation!] @derivedFrom(field: "event")
 }
 
-type DepositsPaidOut @entity(immutable: true) {
-  id: Bytes!
-  eventId: Bytes! # bytes32
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Account @entity {
+  id: ID!
+  totalRSVPs: BigInt!
+  totalAttendedEvents: BigInt!
+  rsvps: [RSVP!] @derivedFrom(field: "attendee")
+  attendedEvents: [Confirmation!] @derivedFrom(field: "attendee")
 }
 
-type NewEventCreated @entity(immutable: true) {
-  id: Bytes!
-  eventId: Bytes! # bytes32
-  eventDataCID: String! # string
-  creatorAddress: Bytes! # address
-  eventTimestamp: BigInt! # uint256
-  deposit: BigInt! # uint256
-  maxCapacity: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type RSVP @entity {
+  id: ID!
+  attendee: Account!
+  event: Event!
 }
 
-type NewRSVP @entity(immutable: true) {
-  id: Bytes!
-  eventId: Bytes! # bytes32
-  attendeeAddress: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Confirmation @entity {
+  id: ID!
+  attendee: Account!
+  event: Event!
 }
