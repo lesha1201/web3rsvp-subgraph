@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ 30-days-of-web3",
-    "create-local": "graph create --node http://localhost:8020/ 30-days-of-web3",
-    "remove-local": "graph remove --node http://localhost:8020/ 30-days-of-web3",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 30-days-of-web3",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ lesha1201/30-days-of-web3",
+    "create-local": "graph create --node http://localhost:8020/ lesha1201/30-days-of-web3",
+    "remove-local": "graph remove --node http://localhost:8020/ lesha1201/30-days-of-web3",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 lesha1201/30-days-of-web3",
     "test": "graph test"
   },
   "dependencies": {
