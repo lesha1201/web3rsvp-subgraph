@@ -1,0 +1,21 @@
+{
+  "name": "30-days-of-web3",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ 30-days-of-web3",
+    "create-local": "graph create --node http://localhost:8020/ 30-days-of-web3",
+    "remove-local": "graph remove --node http://localhost:8020/ 30-days-of-web3",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 30-days-of-web3",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.58.0",
+    "@graphprotocol/graph-ts": "0.30.0",
+    "@protofire/subgraph-toolkit": "^0.1.2"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}

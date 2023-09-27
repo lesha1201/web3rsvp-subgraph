@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Web3RSVP
+    network: mumbai
+    source:
+      address: "0xe3947a0e81749F2c7161ef5968f787514Ef18C2C"
+      abi: Web3RSVP
+      startBlock: 40540722
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ConfirmedAttendee
+        - DepositsPaidOut
+        - NewEventCreated
+        - NewRSVP
+      abis:
+        - name: Web3RSVP
+          file: ./abis/Web3RSVP.json
+      eventHandlers:
+        - event: ConfirmedAttendee(bytes32,address)
+          handler: handleConfirmedAttendee
+        - event: DepositsPaidOut(bytes32)
+          handler: handleDepositsPaidOut
+        - event: NewEventCreated(bytes32,string,address,uint256,uint256,uint256)
+          handler: handleNewEventCreated
+        - event: NewRSVP(bytes32,address)
+          handler: handleNewRSVP
+      file: ./src/web-3-rsvp.ts

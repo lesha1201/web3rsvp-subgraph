@@ -1,0 +1,38 @@
+type ConfirmedAttendee @entity(immutable: true) {
+  id: Bytes!
+  eventId: Bytes! # bytes32
+  attendeeAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DepositsPaidOut @entity(immutable: true) {
+  id: Bytes!
+  eventId: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewEventCreated @entity(immutable: true) {
+  id: Bytes!
+  eventId: Bytes! # bytes32
+  eventDataCID: String! # string
+  creatorAddress: Bytes! # address
+  eventTimestamp: BigInt! # uint256
+  deposit: BigInt! # uint256
+  maxCapacity: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewRSVP @entity(immutable: true) {
+  id: Bytes!
+  eventId: Bytes! # bytes32
+  attendeeAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
