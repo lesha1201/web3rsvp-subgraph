@@ -1,10 +1,10 @@
 type Event @entity {
   id: ID!
-  eventID: Bytes!
+  eventId: Bytes!
   name: String
   description: String
   link: String
-  imageURL: String
+  imageUrl: String
   eventOwner: Bytes!
   eventTimestamp: BigInt!
   maxCapacity: BigInt!
