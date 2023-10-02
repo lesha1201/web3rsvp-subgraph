@@ -1,8 +1,6 @@
 specVersion: 0.0.5
 schema:
   file: ./schema.graphql
-features:
-  - ipfsOnEthereumContracts
 dataSources:
   - kind: ethereum
     name: Web3RSVP
@@ -15,6 +13,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
+      file: ./src/web-3-rsvp.ts
       entities:
         - Event
         - Account
@@ -32,4 +31,16 @@ dataSources:
           handler: handleNewEventCreated
         - event: NewRSVP(bytes32,address)
           handler: handleNewRSVP
+templates:
+  - kind: file/ipfs
+    name: EventMetadata
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
       file: ./src/web-3-rsvp.ts
+      handler: handleEventMetadata
+      entities:
+        - EventMetadata
+      abis:
+        - name: Web3RSVP
+          file: ./abis/Web3RSVP.json

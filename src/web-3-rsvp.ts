@@ -1,12 +1,19 @@
 import { integer } from "@protofire/subgraph-toolkit";
-import { Address, ipfs, json } from "@graphprotocol/graph-ts";
+import { Address, Bytes, dataSource, json } from "@graphprotocol/graph-ts";
 import {
   ConfirmedAttendee as ConfirmedAttendeeEvent,
   DepositsPaidOut as DepositsPaidOutEvent,
   NewEventCreated as NewEventCreatedEvent,
   NewRSVP as NewRSVPEvent,
 } from "../generated/Web3RSVP/Web3RSVP";
-import { Account, Confirmation, Event, RSVP } from "../generated/schema";
+import {
+  Account,
+  Confirmation,
+  Event,
+  EventMetadata,
+  RSVP,
+} from "../generated/schema";
+import { EventMetadata as EventMetadataTemplate } from "../generated/templates";
 
 /*-- Event handlers --*/
 
@@ -32,42 +39,53 @@ export function handleNewEventCreated(
   event.totalRSVPs = integer.ZERO;
   event.totalConfirmedAttendees = integer.ZERO;
 
-  const metadata = ipfs.cat(contractEvent.params.eventDataCID + "/data.json");
+  const ipfsPath = contractEvent.params.eventDataCID + "/data.json";
 
-  if (metadata) {
-    const value = json.fromBytes(metadata).toObject();
+  event.metadata = ipfsPath;
 
-    if (value) {
-      const name = value.get("name");
-      const description = value.get("description");
-      const link = value.get("link");
-      const imagePath = value.get("image");
-
-      if (name) {
-        event.name = name.toString();
-      }
-
-      if (description) {
-        event.description = description.toString();
-      }
-
-      if (link) {
-        event.link = link.toString();
-      }
-
-      if (imagePath) {
-        event.imageUrl =
-          "https://ipfs.io/ipfs/" +
-          contractEvent.params.eventDataCID +
-          imagePath.toString();
-      } else {
-        event.imageUrl =
-          "https://ipfs.io/ipfs/bafybeibssbrlptcefbqfh4vpw2wlmqfj2kgxt3nil4yujxbmdznau3t5wi/event.png";
-      }
-    }
-  }
+  EventMetadataTemplate.create(ipfsPath);
 
   event.save();
+}
+
+export function handleEventMetadata(content: Bytes): void {
+  const ipfsPath = dataSource.stringParam();
+  const cid = ipfsPath.split("/")[0];
+
+  const value = json.fromBytes(content).toObject();
+
+  if (value == null) {
+    return;
+  }
+
+  let eventMetadata = new EventMetadata(ipfsPath);
+
+  const name = value.get("name");
+  const description = value.get("description");
+  const link = value.get("link");
+  const imagePath = value.get("image");
+
+  if (name) {
+    eventMetadata.name = name.toString();
+  }
+
+  if (description) {
+    eventMetadata.description = description.toString();
+  }
+
+  if (link) {
+    eventMetadata.link = link.toString();
+  }
+
+  if (imagePath) {
+    eventMetadata.imageUrl =
+      "https://ipfs.io/ipfs/" + cid + imagePath.toString();
+  } else {
+    eventMetadata.imageUrl =
+      "https://ipfs.io/ipfs/bafybeibssbrlptcefbqfh4vpw2wlmqfj2kgxt3nil4yujxbmdznau3t5wi/event.png";
+  }
+
+  eventMetadata.save();
 }
 
 export function handleNewRSVP(event: NewRSVPEvent): void {

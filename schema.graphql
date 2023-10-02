@@ -1,12 +1,9 @@
 type Event @entity {
   id: ID!
   eventId: Bytes!
-  name: String
-  description: String
-  link: String
-  imageUrl: String
   eventOwner: Bytes!
   eventTimestamp: BigInt!
+  metadata: EventMetadata
   maxCapacity: BigInt!
   deposit: BigInt!
   paidOut: Boolean!
@@ -14,6 +11,14 @@ type Event @entity {
   totalConfirmedAttendees: BigInt!
   rsvps: [RSVP!] @derivedFrom(field: "event")
   confirmedAttendees: [Confirmation!] @derivedFrom(field: "event")
+}
+
+type EventMetadata @entity {
+  id: ID!
+  name: String
+  description: String
+  imageUrl: String
+  link: String
 }
 
 type Account @entity {
